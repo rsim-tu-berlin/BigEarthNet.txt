@@ -1,0 +1,488 @@
+<!-- Dataset Comparison Table — include via fetch() in index.html -->
+<style>
+  .table-section { padding: 56px 0 0; }
+
+  .ds-table-wrap {
+    margin-top: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+    box-shadow: var(--shadow-sm);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ds-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .78rem;
+    font-family: var(--font-sans);
+    white-space: nowrap;
+  }
+
+  /* ── Group header row ── */
+  .ds-table thead tr.group-row th {
+    background: #f1f5f9;
+    color: var(--ink-muted);
+    font-size: .7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    padding: 9px 10px 6px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .ds-table thead tr.group-row th.left { text-align: left; padding-left: 16px; }
+  .ds-table thead tr.group-row th.spacer { background: #f8fafc; border: none; width: 8px; }
+
+  /* ── Rotated sub-header row ── */
+  .ds-table thead tr.sub-row th {
+    background: var(--bg-card);
+    padding: 4px 3px 0;
+    border-bottom: 2px solid var(--border);
+    vertical-align: bottom;
+    text-align: center;
+  }
+  .ds-table thead tr.sub-row th.dataset-col {
+    text-align: left;
+    padding-left: 16px;
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--ink);
+    vertical-align: bottom;
+    padding-bottom: 10px;
+    min-width: 140px;
+  }
+  .ds-table thead tr.sub-row th.spacer { background: #f8fafc; border-bottom: 2px solid var(--border); }
+
+  .rotate-label {
+    display: inline-block;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: .7rem;
+    font-weight: 600;
+    color: var(--ink-muted);
+    letter-spacing: .03em;
+    padding-bottom: 6px;
+    height: 80px;
+    line-height: 1.25;
+    white-space: normal;
+    text-align: left;
+    width: 18px;
+  }
+
+  /* ── Body ── */
+  .ds-table tbody td {
+    padding: 7px 6px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    color: var(--ink-muted);
+    vertical-align: middle;
+  }
+  .ds-table tbody td.dataset-name {
+    text-align: left;
+    padding-left: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .ds-table tbody td.spacer {
+    border-bottom: 1px solid var(--border);
+    background: #fafafa;
+    width: 8px;
+    padding: 0;
+  }
+  .ds-table tbody td.samples {
+    font-family: var(--font-mono, monospace);
+    font-size: .76rem;
+    color: var(--accent);
+    font-weight: 500;
+    padding-right: 16px;
+    text-align: right;
+  }
+
+  /* Highlight our row */
+  .ds-table tbody tr.ours td {
+    background: var(--accent-pale, #e8f3f9);
+    border-top: 1.5px solid var(--accent, #1d6a8c);
+    border-bottom: 1.5px solid var(--accent, #1d6a8c);
+  }
+  .ds-table tbody tr.ours td.dataset-name {
+    font-weight: 700;
+    color: var(--accent-2, #0e4a6b);
+  }
+  .ds-table tbody tr.ours td.samples {
+    font-weight: 700;
+  }
+  .ds-table tbody tr:last-child td { border-bottom: none; }
+  .ds-table tbody tr:not(.ours):hover td { background: #fafafa; }
+
+  /* Icons */
+  .ic-yes  { color: #16a34a; font-size: .9rem; }
+  .ic-no   { color: #dc2626; font-size: .9rem; }
+  .ic-part { color: #0891b2; font-size: .9rem; }
+
+  /* Caption */
+  .table-caption {
+    font-size: .8rem;
+    color: var(--ink-muted);
+    line-height: 1.65;
+    margin-top: 12px;
+    text-align: center;
+  }
+  .table-caption strong { color: var(--ink); }
+  .table-caption .ic-part { font-size: .8rem; }
+
+  /* scroll hint on small screens */
+  .scroll-hint {
+    display: none;
+    font-size: .75rem;
+    color: var(--ink-light, #a1a1aa);
+    text-align: center;
+    margin-top: 6px;
+  }
+  @media (max-width: 700px) { .scroll-hint { display: block; } }
+</style>
+
+<section class="table-section" id="comparison">
+  <p>
+    Datasets are compared across multi-sensor imagery availability, annotation methods, supported tasks,
+    geolocation data, and total number of image-text (IT) samples.
+  </p>
+
+  <div class="ds-table-wrap">
+    <table class="ds-table" aria-label="Comparison of RS image-text datasets">
+      <thead>
+      <!-- Group headers -->
+      <tr class="group-row">
+        <th class="left" rowspan="1">Dataset</th>
+        <th class="spacer"></th>
+        <th colspan="3">Multi-Sensor Images</th>
+        <th class="spacer"></th>
+        <th colspan="5">Annotation Method</th>
+        <th class="spacer"></th>
+        <th colspan="3">Supported Tasks</th>
+        <th class="spacer"></th>
+        <th></th><!-- Geolocation -->
+        <th></th><!-- Samples -->
+      </tr>
+      <!-- Rotated sub-headers -->
+      <tr class="sub-row">
+        <th class="dataset-col"><!-- Dataset label already in group row --></th>
+        <th class="spacer"></th>
+        <th><span class="rotate-label">Available</span></th>
+        <th><span class="rotate-label">&gt;3 bands per image</span></th>
+        <th><span class="rotate-label">Co-registered</span></th>
+        <th class="spacer"></th>
+        <th><span class="rotate-label">Manual</span></th>
+        <th><span class="rotate-label">Template</span></th>
+        <th><span class="rotate-label">Web scraped</span></th>
+        <th><span class="rotate-label">LLM-based</span></th>
+        <th><span class="rotate-label">Manual QC</span></th>
+        <th class="spacer"></th>
+        <th><span class="rotate-label">Captioning</span></th>
+        <th><span class="rotate-label">VQA</span></th>
+        <th><span class="rotate-label">Ref. Exp. Detection</span></th>
+        <th class="spacer"></th>
+        <th><span class="rotate-label">Geolocation data</span></th>
+        <th style="text-align:right;padding-right:16px;"><span class="rotate-label"># IT samples</span></th>
+      </tr>
+      </thead>
+      <tbody>
+      <!--                          ms  >3b  coreg    man  tmpl web  llm  qc     cap  vqa  det  loc   samples -->
+      <tr>
+        <td class="dataset-name">UCM-Captions</td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="samples">10.5k</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">Sydney-Captions</td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="samples">3k</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">RSICD</td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="samples">54.6k</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">RSITMD</td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="samples">23.7k</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">NWPU-Captions</td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="samples">157k</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">GAIA</td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-part">(✓)</span></td>
+        <td class="samples">205k</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">Git-10M</td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td class="samples">10.5M</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">RSVQAxBEN</td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="samples">14.8M</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">RS5M</td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-part">(✓)</span></td>
+        <td><span class="ic-part">(✓)</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-part">(✓)</span></td>
+        <td class="samples">5.0M</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">RSTeller</td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="samples">2.6M</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">Landsat30-AU</td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-part">(✓)</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-part">(✓)</span></td>
+        <td class="samples">216k</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">ChatEarthNet</td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-part">(✓)</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="samples">173k</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">MS-Clip</td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td class="samples">985k</td>
+      </tr>
+      <!-- OUR ROW -->
+      <tr class="ours">
+        <td class="dataset-name">BigEarthNet.txt <em style="font-weight:400;font-size:.75rem;">(ours)</em></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-no">✗</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-part">(✓)</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td class="spacer"></td>
+        <td><span class="ic-yes">✓</span></td>
+        <td class="samples">9.6M</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="scroll-hint">← scroll to see full table →</div>
+
+  <p class="table-caption">
+    <strong>Legend:</strong>
+    <span class="ic-yes">✓</span> property holds &nbsp;·&nbsp;
+    <span class="ic-no">✗</span> property does not hold &nbsp;·&nbsp;
+    <span class="ic-part">(✓)</span> only parts of the dataset fulfill this property. <br>
+    Annotation methods include: Manual, Template-based, Web-scraped, LLM-based, and Manual quality check (QC).
+    Supported tasks: image captioning, visual question answering (VQA), and referring expression detection.
+  </p>
+</section>

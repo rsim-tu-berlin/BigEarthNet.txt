@@ -1,0 +1,210 @@
+<!-- Main Results Table — include via fetch() in index.html -->
+<style>
+  .results-table-section { padding: 56px 0 0; }
+
+  .results-table-section .ds-table-wrap {
+    margin-top: 24px;
+  }
+
+  /* Mid-rule separator between RS and CV model groups */
+  .ds-table tbody tr.midrule td {
+    border-top: 2px solid var(--border);
+    padding: 0;
+    height: 0;
+    line-height: 0;
+    font-size: 0;
+  }
+
+  /* Parameter count column */
+  .ds-table td.params {
+    font-family: var(--font-mono, monospace);
+    font-size: .76rem;
+    color: var(--ink-muted);
+    text-align: center;
+  }
+
+  .num  { font-family: var(--font-mono, monospace); font-size: .82rem; color: var(--ink-muted); text-align: right; }
+  .best { font-weight: 700; color: var(--sat, #2e7d52); }
+  .second { font-style: italic; color: var(--ink, #18181b); }
+
+  .group-label {
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-light, #a1a1aa);
+    padding: 8px 16px 4px !important;
+    border-bottom: none !important;
+    background: #f8fafc;
+  }
+
+  .results-footnote {
+    font-size: .78rem;
+    color: var(--ink-muted);
+    margin-top: 10px;
+    text-align: center;
+    line-height: 1.6;
+  }
+</style>
+
+<section class="results-table-section" id="results-main">
+  <p>
+    <b>Benchmark · Main Results:</b> Performance of vision-language models on the <strong>BigEarthNet.txt benchmark split</strong> across four task
+    categories. Metrics: BLEU-4 for captioning, accuracy for binary VQA and MCQ, and mIoU for referring
+    expression detection. All values in %.
+  </p>
+
+  <div class="ds-table-wrap">
+    <table class="ds-table" aria-label="Main benchmark results">
+      <thead>
+      <tr class="group-row">
+        <th class="left">Model</th>
+        <th class="spacer"></th>
+        <th style="text-align:center;"># Params</th>
+        <th class="spacer"></th>
+        <th>Captioning</th>
+        <th>Binary VQA</th>
+        <th>MCQ</th>
+        <th style="white-space:normal;min-width:72px;text-align:center;">Ref. Exp. Detection</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- RS-specific VLMs -->
+      <tr>
+        <td colspan="8" class="group-label">RS-specific Vision-Language Models</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">GeoChat</td>
+        <td class="spacer"></td>
+        <td class="params">7B</td>
+        <td class="spacer"></td>
+        <td class="num">0.75</td>
+        <td class="num">50.82</td>
+        <td class="num">28.36</td>
+        <td class="num">4.85</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">LHRS-Bot</td>
+        <td class="spacer"></td>
+        <td class="params">7B</td>
+        <td class="spacer"></td>
+        <td class="num">0.43</td>
+        <td class="num">48.23</td>
+        <td class="num">22.99</td>
+        <td class="num">4.79</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">SkyEyeGPT</td>
+        <td class="spacer"></td>
+        <td class="params">7B</td>
+        <td class="spacer"></td>
+        <td class="num">0.00</td>
+        <td class="num">48.87</td>
+        <td class="num">27.60</td>
+        <td class="num">6.08</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">EarthDial<sub>rgb</sub></td>
+        <td class="spacer"></td>
+        <td class="params">4B</td>
+        <td class="spacer"></td>
+        <td class="num">0.62</td>
+        <td class="num">58.38</td>
+        <td class="num">32.94</td>
+        <td class="num">7.13</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">EarthDial<sub>s2</sub></td>
+        <td class="spacer"></td>
+        <td class="params">4B</td>
+        <td class="spacer"></td>
+        <td class="num">0.00</td>
+        <td class="num">44.06</td>
+        <td class="num">8.43</td>
+        <td class="num">0.49</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">EarthMind<sub>rgb</sub></td>
+        <td class="spacer"></td>
+        <td class="params">4B</td>
+        <td class="spacer"></td>
+        <td class="num best">1.66</td>
+        <td class="num">57.90</td>
+        <td class="num">34.25</td>
+        <td class="num">12.12</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">EarthMind<sub>s1s2</sub></td>
+        <td class="spacer"></td>
+        <td class="params">4B</td>
+        <td class="spacer"></td>
+        <td class="num second">1.46</td>
+        <td class="num">57.79</td>
+        <td class="num">35.26</td>
+        <td class="num">16.18</td>
+      </tr>
+
+      <!-- General-purpose VLMs -->
+      <tr>
+        <td colspan="8" class="group-label">General-Purpose Vision-Language Models</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">GPT</td>
+        <td class="spacer"></td>
+        <td class="params">2T*</td>
+        <td class="spacer"></td>
+        <td class="num">0.30</td>
+        <td class="num second">60.39</td>
+        <td class="num">34.93</td>
+        <td class="num best">31.73</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">Qwen</td>
+        <td class="spacer"></td>
+        <td class="params">8B</td>
+        <td class="spacer"></td>
+        <td class="num">0.57</td>
+        <td class="num best">61.96</td>
+        <td class="num best">37.55</td>
+        <td class="num">18.00</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">GLM</td>
+        <td class="spacer"></td>
+        <td class="params">10B</td>
+        <td class="spacer"></td>
+        <td class="num">0.79</td>
+        <td class="num">56.59</td>
+        <td class="num">34.45</td>
+        <td class="num second">27.24</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">LLaVa</td>
+        <td class="spacer"></td>
+        <td class="params">7B</td>
+        <td class="spacer"></td>
+        <td class="num">0.96</td>
+        <td class="num">58.60</td>
+        <td class="num second">36.27</td>
+        <td class="num">20.17</td>
+      </tr>
+      <tr>
+        <td class="dataset-name">InternVL</td>
+        <td class="spacer"></td>
+        <td class="params">1B</td>
+        <td class="spacer"></td>
+        <td class="num">0.45</td>
+        <td class="num">54.11</td>
+        <td class="num">26.76</td>
+        <td class="num">5.76</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="results-footnote">
+    <strong>Bold</strong> = best &nbsp;·&nbsp; <em>Italic</em> = second best &nbsp;·&nbsp;
+    *: Reported parameter count <br>
+    Metric: BLEU-4 (Captioning), Accuracy (Binary VQA, MCQ), mIoU (Ref. Exp. Detection)
+  </p>
+</section>

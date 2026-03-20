@@ -1,0 +1,192 @@
+<!-- Referring Expression Detection Results Table — include via fetch() in index.html -->
+<style>
+    .det-table-section { padding: 56px 0 0; }
+
+    .det-table-section .results-footnote {
+        font-size: .78rem;
+        color: var(--ink-muted);
+        margin-top: 10px;
+        text-align: center;
+        line-height: 1.6;
+    }
+
+    .ds-table td.if-cell {
+        text-align: center;
+        font-size: .9rem;
+    }
+    .ic-yes  { color: #16a34a; }
+    .ic-no   { color: #dc2626; }
+</style>
+
+<section class="det-table-section" id="results-det">
+    <p>
+        <b>Benchmark · Referring Expression Detection Results:</b> mIoU and accuracy@<i>k</i> (%) on the referring
+        expression detection task, where a prediction is correct if its overlap with the reference exceeds <i>k</i>%.
+        IF indicates whether an unambiguous answer could be extracted consistently.
+    </p>
+
+    <div class="ds-table-wrap">
+        <table class="ds-table" aria-label="Referring expression detection results">
+            <thead>
+            <tr class="group-row">
+                <th class="left">Model</th>
+                <th class="spacer"></th>
+                <th>mIoU</th>
+                <th>Acc@25</th>
+                <th>Acc@50</th>
+                <th>Acc@75</th>
+                <th>Acc@90</th>
+                <th class="spacer"></th>
+                <th>IF</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="9" class="group-label">RS-specific Vision-Language Models</td>
+            </tr>
+            <tr>
+                <td class="dataset-name">GeoChat</td>
+                <td class="spacer"></td>
+                <td class="num">7.51</td>
+                <td class="num">11.34</td>
+                <td class="num">1.51</td>
+                <td class="num">0.00</td>
+                <td class="num">0.00</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">LHRS-Bot</td>
+                <td class="spacer"></td>
+                <td class="num">7.47</td>
+                <td class="num">12.59</td>
+                <td class="num">1.89</td>
+                <td class="num">0.50</td>
+                <td class="num">0.00</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-no">✗</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">SkyEyeGPT</td>
+                <td class="spacer"></td>
+                <td class="num">12.12</td>
+                <td class="num">20.03</td>
+                <td class="num">6.55</td>
+                <td class="num">2.27</td>
+                <td class="num">0.13</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">EarthDial<sub>rgb</sub></td>
+                <td class="spacer"></td>
+                <td class="num">8.99</td>
+                <td class="num">12.85</td>
+                <td class="num">2.02</td>
+                <td class="num">0.00</td>
+                <td class="num">0.00</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">EarthDial<sub>s2</sub></td>
+                <td class="spacer"></td>
+                <td class="num">0.98</td>
+                <td class="num">0.63</td>
+                <td class="num">0.00</td>
+                <td class="num">0.00</td>
+                <td class="num">0.00</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-no">✗</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">EarthMind<sub>rgb</sub></td>
+                <td class="spacer"></td>
+                <td class="num">21.90</td>
+                <td class="num">35.52</td>
+                <td class="num second">17.88</td>
+                <td class="num best">5.67</td>
+                <td class="num best">1.39</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-no">✗</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">EarthMind<sub>s1s2</sub></td>
+                <td class="spacer"></td>
+                <td class="num">22.65</td>
+                <td class="num second">38.41</td>
+                <td class="num">16.62</td>
+                <td class="num second">4.53</td>
+                <td class="num">1.01</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-no">✗</span></td>
+            </tr>
+
+            <tr>
+                <td colspan="9" class="group-label">General-Purpose Vision-Language Models</td>
+            </tr>
+            <tr>
+                <td class="dataset-name">GPT</td>
+                <td class="spacer"></td>
+                <td class="num best">25.16</td>
+                <td class="num best">40.81</td>
+                <td class="num best">19.52</td>
+                <td class="num">4.28</td>
+                <td class="num second">1.26</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">Qwen</td>
+                <td class="spacer"></td>
+                <td class="num">15.60</td>
+                <td class="num">25.31</td>
+                <td class="num">9.95</td>
+                <td class="num">2.39</td>
+                <td class="num">0.38</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">GLM</td>
+                <td class="spacer"></td>
+                <td class="num">22.35</td>
+                <td class="num">37.03</td>
+                <td class="num">16.75</td>
+                <td class="num">3.53</td>
+                <td class="num best">1.39</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">LLaVa</td>
+                <td class="spacer"></td>
+                <td class="num second">23.04</td>
+                <td class="num second">38.41</td>
+                <td class="num">15.74</td>
+                <td class="num">3.90</td>
+                <td class="num">0.63</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">InternVL</td>
+                <td class="spacer"></td>
+                <td class="num">5.01</td>
+                <td class="num">5.29</td>
+                <td class="num">0.88</td>
+                <td class="num">0.00</td>
+                <td class="num">0.00</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-no">✗</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p class="results-footnote">
+        <strong>Bold</strong> = best &nbsp;·&nbsp; <em>Italic</em> = second best <br>
+        IF: instruction followed (unambiguous answer extractable) <br>
+        Acc@<i>k</i>: prediction counted correct if IoU with reference &gt; <i>k</i>%
+    </p>
+</section>

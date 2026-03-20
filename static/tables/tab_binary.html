@@ -1,0 +1,191 @@
+<!-- Binary VQA Results Table — include via fetch() in index.html -->
+<style>
+    .bvqa-table-section { padding: 56px 0 0; }
+
+    .bvqa-table-section .results-footnote {
+        font-size: .78rem;
+        color: var(--ink-muted);
+        margin-top: 10px;
+        text-align: center;
+        line-height: 1.6;
+    }
+
+    .ds-table td.if-cell {
+        text-align: center;
+        font-size: .9rem;
+    }
+    .ic-yes  { color: #16a34a; }
+    .ic-no   { color: #dc2626; }
+</style>
+
+<section class="bvqa-table-section" id="results-bvqa">
+    <p>
+        <b>Benchmark · Binary VQA Results:</b> Accuracy (%) on the binary VQA tasks: Presence (Pr), Area (A), Counting (Cnt), Adjacency (Adj),
+        and Overall (OA). IF indicates whether an unambiguous answer could be extracted consistently.
+    </p>
+
+    <div class="ds-table-wrap">
+        <table class="ds-table" aria-label="Binary VQA results">
+            <thead>
+            <tr class="group-row">
+                <th class="left">Model</th>
+                <th class="spacer"></th>
+                <th>Pr</th>
+                <th>A</th>
+                <th>Cnt</th>
+                <th>Adj</th>
+                <th>OA</th>
+                <th class="spacer"></th>
+                <th>IF</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="9" class="group-label">RS-specific Vision-Language Models</td>
+            </tr>
+            <tr>
+                <td class="dataset-name">GeoChat</td>
+                <td class="spacer"></td>
+                <td class="num">51.65</td>
+                <td class="num">46.86</td>
+                <td class="num">43.57</td>
+                <td class="num">55.51</td>
+                <td class="num">50.82</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">LHRS-Bot</td>
+                <td class="spacer"></td>
+                <td class="num">48.83</td>
+                <td class="num">51.23</td>
+                <td class="num">49.23</td>
+                <td class="num">46.10</td>
+                <td class="num">48.23</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-no">✗</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">SkyEyeGPT</td>
+                <td class="spacer"></td>
+                <td class="num">52.19</td>
+                <td class="num">51.61</td>
+                <td class="num">46.63</td>
+                <td class="num">46.94</td>
+                <td class="num">48.87</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">EarthDial<sub>rgb</sub></td>
+                <td class="spacer"></td>
+                <td class="num">64.47</td>
+                <td class="num">53.06</td>
+                <td class="num">51.99</td>
+                <td class="num best">60.62</td>
+                <td class="num">58.38</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-no">✗</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">EarthDial<sub>s2</sub></td>
+                <td class="spacer"></td>
+                <td class="num">37.45</td>
+                <td class="num">40.20</td>
+                <td class="num">47.17</td>
+                <td class="num">47.78</td>
+                <td class="num">44.06</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-no">✗</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">EarthMind<sub>rgb</sub></td>
+                <td class="spacer"></td>
+                <td class="num best">69.34</td>
+                <td class="num">56.20</td>
+                <td class="num">51.07</td>
+                <td class="num">55.97</td>
+                <td class="num">57.90</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">EarthMind<sub>s1s2</sub></td>
+                <td class="spacer"></td>
+                <td class="num second">69.07</td>
+                <td class="num">54.59</td>
+                <td class="num">50.15</td>
+                <td class="num">56.98</td>
+                <td class="num">57.79</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+
+            <tr>
+                <td colspan="9" class="group-label">General-Purpose Vision-Language Models</td>
+            </tr>
+            <tr>
+                <td class="dataset-name">GPT</td>
+                <td class="spacer"></td>
+                <td class="num">61.59</td>
+                <td class="num best">67.38</td>
+                <td class="num second">61.94</td>
+                <td class="num">55.86</td>
+                <td class="num second">60.39</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">Qwen</td>
+                <td class="spacer"></td>
+                <td class="num">64.33</td>
+                <td class="num second">66.62</td>
+                <td class="num best">62.33</td>
+                <td class="num">58.45</td>
+                <td class="num best">61.96</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">GLM</td>
+                <td class="spacer"></td>
+                <td class="num">60.01</td>
+                <td class="num">62.40</td>
+                <td class="num">54.75</td>
+                <td class="num">53.03</td>
+                <td class="num">56.59</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">LLaVa</td>
+                <td class="spacer"></td>
+                <td class="num">62.07</td>
+                <td class="num">58.19</td>
+                <td class="num">54.36</td>
+                <td class="num second">58.94</td>
+                <td class="num">58.60</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-yes">✓</span></td>
+            </tr>
+            <tr>
+                <td class="dataset-name">InternVL</td>
+                <td class="spacer"></td>
+                <td class="num">56.24</td>
+                <td class="num">48.77</td>
+                <td class="num">51.61</td>
+                <td class="num">56.60</td>
+                <td class="num">54.11</td>
+                <td class="spacer"></td>
+                <td class="if-cell"><span class="ic-no">✗</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p class="results-footnote">
+        <strong>Bold</strong> = best &nbsp;·&nbsp; <em>Italic</em> = second best <br>
+        IF: instruction followed (unambiguous answer extractable) <br>
+        Pr = Presence, A = Area, Cnt = Counting, Adj = Adjacency, OA = Overall
+    </p>
+</section>

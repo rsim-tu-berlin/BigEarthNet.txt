@@ -1,0 +1,84 @@
+<!-- RS-InternVL Fine-tuning Results Table — include via fetch() in index.html -->
+<style>
+    .ours-table-section { padding: 56px 0 0; }
+
+    .ours-table-section .results-footnote {
+        font-size: .78rem;
+        color: var(--ink-muted);
+        margin-top: 10px;
+        text-align: center;
+        line-height: 1.6;
+    }
+
+    .ds-table tr.sota-rs td { color: var(--ink-muted); font-style: italic; }
+    .ds-table tr.sota-cv td { color: var(--ink-muted); font-style: italic; }
+
+    .ds-table tr.our-model td {
+        background: var(--accent-pale, #e8f3f9);
+        border-top: 1.5px solid var(--accent, #1d6a8c);
+        border-bottom: 1.5px solid var(--accent, #1d6a8c);
+        font-weight: 700;
+    }
+    .ds-table tr.our-model td.dataset-name {
+        color: var(--accent-2, #0e4a6b);
+    }
+    .ds-table tr.our-model td.num {
+        color: var(--sat, #2e7d52);
+    }
+</style>
+
+<section class="ours-table-section" id="results-ours">
+    <p>
+        <b>Fine-tuned RS-InternVL vs. Best Existing Models:</b> BLEU-4 for captioning, accuracy for binary VQA and
+        MCQ, and mIoU for referring expression detection. SOTA RS and SOTA CV report the best result per task among
+        RS-specific and general-purpose VLMs, respectively. All values in %.
+    </p>
+
+    <div class="ds-table-wrap">
+        <table class="ds-table" aria-label="RS-InternVL fine-tuning results">
+            <thead>
+            <tr class="group-row">
+                <th class="left">Model</th>
+                <th class="spacer"></th>
+                <th>Captioning</th>
+                <th>Binary VQA</th>
+                <th>MCQ</th>
+                <th style="white-space:normal;min-width:72px;text-align:center;">Ref. Exp. Detection</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="sota-rs">
+                <td class="dataset-name">SOTA RS</td>
+                <td class="spacer"></td>
+                <td class="num">1.66</td>
+                <td class="num">58.38</td>
+                <td class="num">35.26</td>
+                <td class="num">16.18</td>
+            </tr>
+            <tr class="sota-cv">
+                <td class="dataset-name">SOTA CV</td>
+                <td class="spacer"></td>
+                <td class="num">0.96</td>
+                <td class="num">61.96</td>
+                <td class="num">37.55</td>
+                <td class="num">31.73</td>
+            </tr>
+            <tr class="our-model">
+                <td class="dataset-name">RS-InternVL <em style="font-weight:400;font-size:.75rem;">(ours)</em></td>
+                <td class="spacer"></td>
+                <td class="num best">34.04</td>
+                <td class="num best">73.29</td>
+                <td class="num best">51.49</td>
+                <td class="num best">65.84</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p class="results-footnote">
+        <strong>Bold</strong> = best <br>
+        SOTA RS: best among the RS-specific Vision-Language Models
+        (captioning: EarthMind<sub>rgb</sub>&nbsp;·&nbsp;binary VQA: EarthDial<sub>rgb</sub>&nbsp;·&nbsp;MCQ &amp; detection: EarthMind<sub>s1s2</sub>) <br>
+        SOTA CV: best among the general-purpose Vision-Language Models (captioning: LLaVa&nbsp;·&nbsp;binary VQA &amp; MCQ: Qwen&nbsp;·&nbsp;detection: GPT)
+    </p>
+</section>
