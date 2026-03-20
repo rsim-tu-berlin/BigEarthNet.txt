@@ -246,11 +246,58 @@
         text-align: center;
         line-height: 1.6;
     }
+
+    /* Captioning sub-tabs */
+    .cap-sub-btn {
+        font-family: var(--font-sans, sans-serif);
+        font-size: .76rem;
+        font-weight: 500;
+        color: var(--ink-muted, #52525b);
+        background: #f1f5f9;
+        border: 1px solid var(--border, #e4e4e7);
+        border-radius: 6px;
+        padding: 4px 12px;
+        cursor: pointer;
+        transition: all .15s;
+    }
+    .cap-sub-btn:hover { background: var(--accent-pale, #e8f3f9); color: var(--accent, #1d6a8c); border-color: var(--accent, #1d6a8c); }
+    .cap-sub-btn.active { background: var(--accent, #1d6a8c); color: #fff; border-color: var(--accent, #1d6a8c); }
+    .cap-sub-btn.our-sub { border-color: var(--sat, #2e7d52); color: var(--sat, #2e7d52); }
+    .cap-sub-btn.our-sub.active { background: var(--sat, #2e7d52); color: #fff; }
+
+    .cap-panel { display: none; }
+    .cap-panel.active { display: block; }
+
+    .cap-panel-header {
+        font-size: .82rem;
+        font-weight: 700;
+        color: var(--ink, #18181b);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .cap-modality {
+        font-size: .65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .07em;
+        background: #f1f5f9;
+        color: var(--ink-muted, #52525b);
+        border-radius: 4px;
+        padding: 2px 7px;
+    }
+    .cap-text {
+        font-size: .82rem;
+        color: var(--ink-muted, #52525b);
+        line-height: 1.7;
+        margin: 0;
+    }
 </style>
 
 <section class="qual-section" id="qualitative">
     <p>
-        <b>Qualitative Results:</b> Example predictions across binary VQA, MCQ, and referring expression detection.
+        <b>Qualitative Results:</b> Example predictions across binary VQA, MCQ, referring expression detection, and captioning.
         S2 input shown as true color RGB; S1 as (RGB: VV, VH, VV/VH).
         Reference maps are provided as reader aid only — not given to the models.
         <em>—</em> indicates the answer could not be extracted.
@@ -283,6 +330,11 @@
         <button class="qual-tab-btn" role="tab" onclick="qualSwitch('det2', this)">
             <span class="tab-category">Ref. Exp. Detection</span>
             Point-based detection
+        </button>
+        <!-- Captioning -->
+        <button class="qual-tab-btn" role="tab" onclick="qualSwitch('cap', this)">
+            <span class="tab-category">Captioning</span>
+            All models
         </button>
     </div>
 
@@ -328,9 +380,9 @@
                     <img src="static/images/dataset/samples/_ref_map_S2B_MSIL2A_20180502T093039_N9999_R136_T34TEP_40_38.png" alt="Reference map"/>
                     <span class="qual-refmap-label">Reference map</span>
                     <div class="qual-legend">
-                        <div class="legend-item"><span class="legend-swatch" style="background:#e8c46a;"></span>Arable land</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#3a7d44;"></span>Broad-leaved forest</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#a8c97f;"></span>Trans. woodland, shrub</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#FFFF66;"></span>Arable land</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#006600;"></span>Broad-leaved forest</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#99CC99;"></span>Trans. woodland, shrub</div>
                     </div>
                 </div>
             </div>
@@ -380,9 +432,9 @@
                     <img src="static/images/dataset/samples/_ref_map_S2B_MSIL2A_20170914T093029_N9999_R136_T34TEQ_28_24.png" alt="Reference map"/>
                     <span class="qual-refmap-label">Reference map</span>
                     <div class="qual-legend">
-                        <div class="legend-item"><span class="legend-swatch" style="background:#e8c46a;"></span>Arable land</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#d4a843;"></span>Complex cultivation</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#c0392b;"></span>Urban fabric</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#FFFF66;"></span>Arable land</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#FFFFB3;"></span>Complex cultivation</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#FF6666;"></span>Urban fabric</div>
                     </div>
                 </div>
             </div>
@@ -436,9 +488,9 @@
                     <img src="static/images/dataset/samples/_ref_map_S2B_MSIL2A_20170914T093029_N9999_R136_T34TEQ_24_56.png" alt="Reference map"/>
                     <span class="qual-refmap-label">Reference map</span>
                     <div class="qual-legend">
-                        <div class="legend-item"><span class="legend-swatch" style="background:#e8c46a;"></span>Arable land</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#8db87a;"></span>Land w/ natural veg.</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#a8c97f;"></span>Trans. woodland, shrub</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#FFFF66;"></span>Arable land</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#CCE6B3;"></span>Land w/ natural veg.</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#99CC99;"></span>Trans. woodland, shrub</div>
                     </div>
                 </div>
             </div>
@@ -493,8 +545,8 @@
                     <img src="static/images/dataset/samples/_ref_map_S2A_MSIL2A_20170905T095031_N9999_R079_T35VNL_68_40.png" alt="Reference map"/>
                     <span class="qual-refmap-label">Reference map</span>
                     <div class="qual-legend">
-                        <div class="legend-item"><span class="legend-swatch" style="background:#2d6a2d;"></span>Coniferous forest</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#5a9e5a;"></span>Mixed forest</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#009900;"></span>Coniferous forest</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#33CC33;"></span>Mixed forest</div>
                     </div>
                 </div>
             </div>
@@ -547,13 +599,13 @@
                     <img src="static/images/dataset/samples/_ref_map_S2A_MSIL2A_20170613T101031_N9999_R022_T33UUP_32_64_bb2.png" alt="Reference map"/>
                     <span class="qual-refmap-label">Reference map</span>
                     <div class="qual-legend">
-                        <div class="legend-item"><span class="legend-swatch" style="background:#c0392b;"></span>Urban fabric</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#7f8c8d;"></span>Industrial units</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#e8c46a;"></span>Arable land</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#c8a05a;"></span>Pastures</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#d4a843;"></span>Complex cultivation</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#8db87a;"></span>Land w/ natural veg.</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#3a7d44;"></span>Broad-leaved forest</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#FF6666;"></span>Urban fabric</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#CC4DF2;"></span>Industrial units</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#FFFF66;"></span>Arable land</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#CCFF99;"></span>Pastures</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#FFFFB3;"></span>Complex cultivation</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#CCE6B3;"></span>Land w/ natural veg.</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#006600;"></span>Broad-leaved forest</div>
                     </div>
                 </div>
             </div>
@@ -605,19 +657,150 @@
                     <img src="static/images/dataset/samples/_ref_map_S2B_MSIL2A_20180525T094029_N9999_R036_T35VNL_43_61_bb2.png" alt="Reference map"/>
                     <span class="qual-refmap-label">Reference map</span>
                     <div class="qual-legend">
-                        <div class="legend-item"><span class="legend-swatch" style="background:#8db87a;"></span>Land w/ natural veg.</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#2d6a2d;"></span>Coniferous forest</div>
-                        <div class="legend-item"><span class="legend-swatch" style="background:#5a9e5a;"></span>Mixed forest</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#CCE6B3;"></span>Land w/ natural veg.</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#009900;"></span>Coniferous forest</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#33CC33;"></span>Mixed forest</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <p class="qual-caption">
-        S2 input: true color RGB. S1 input: RGB = VV, VH, VV/VH.
-        Reference maps are provided as reader aid only and are not given as model input.
-        IVL<sub>RS</sub> = RS-InternVL (ours). — = answer could not be extracted.
-    </p>
-</section>
+<!--    <p class="qual-caption">-->
+<!--        S2 input: true color RGB. S1 input: RGB = VV, VH, VV/VH.-->
+<!--        Reference maps are provided as reader aid only and are not given as model input.-->
+<!--        IVL<sub>RS</sub> = RS-InternVL (ours). — = answer could not be extracted.-->
+<!--    </p>-->
 
+    <!-- ══════════════ CAPTIONING ══════════════ -->
+    <div class="qual-panel" id="qual-cap" role="tabpanel">
+        <div class="qual-card">
+            <div class="qual-question">
+                <span class="task-badge">Captioning</span>
+                Explain what this satellite image shows, mentioning the location, season, and landscape features.
+            </div>
+
+            <!-- Shared image + reference -->
+            <div style="display:flex; gap:16px; padding:16px 20px; border-bottom:1px solid var(--border,#e4e4e7); align-items:flex-start; flex-wrap:wrap;">
+                <div style="display:flex; gap:10px; flex-shrink:0;">
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_tci_S2A_MSIL2A_20170818T103021_N9999_R108_T32TMT_63_48.png" alt="S2 image" style="width:110px;height:110px;"/>
+                        <span class="qual-img-label">S2</span>
+                    </div>
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_rtc_S2A_MSIL2A_20170818T103021_N9999_R108_T32TMT_63_48.png" alt="S1 image" style="width:110px;height:110px;"/>
+                        <span class="qual-img-label">S1</span>
+                    </div>
+                </div>
+                <div style="flex:1; min-width:220px;">
+                    <div style="font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-muted); margin-bottom:6px;">Reference caption</div>
+                    <div style="font-size:.78rem; color:var(--ink-muted); line-height:1.65;">
+                        This satellite image, captured during the summer season in Switzerland, showcases a diverse landscape within the "temperate, no dry season, warm summer" climate zone. The dominant feature is arable land (~770,000 m²), which spans two areas. The arable land borders a substantial body of inland waters (~440,000 m²) and a smaller patch of mixed forest (~230,000 m²). The landscape is characterized by a mix of agricultural areas, water bodies, and forest and seminatural areas.
+                    </div>
+                </div>
+                <div class="qual-refmap">
+                    <img src="static/images/dataset/samples/_ref_map_S2A_MSIL2A_20170818T103021_N9999_R108_T32TMT_63_48.png" alt="Reference map"/>
+                    <span class="qual-refmap-label">Reference map</span>
+                    <div class="qual-legend">
+                        <div class="legend-item"><span class="legend-swatch" style="background:#FFFF66;"></span>Arable Land</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#0000CC;"></span>Inland Waters</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#33CC33;"></span>Mixed forest</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-tab buttons -->
+            <div style="padding:12px 20px 0; border-bottom:1px solid var(--border,#e4e4e7);">
+                <div style="font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-muted); margin-bottom:8px;">RS-specific models</div>
+                <div class="cap-subtabs" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;">
+                    <button class="cap-sub-btn active" onclick="capSwitch('em_rgb', this)">EM<sub>rgb</sub></button>
+                    <button class="cap-sub-btn" onclick="capSwitch('em_s1s2', this)">EM<sub>s1s2</sub></button>
+                    <button class="cap-sub-btn" onclick="capSwitch('ed_rgb', this)">ED<sub>rgb</sub></button>
+                    <button class="cap-sub-btn" onclick="capSwitch('ed_s2', this)">ED<sub>s2</sub></button>
+                    <button class="cap-sub-btn" onclick="capSwitch('geochat', this)">GeoChat</button>
+                    <button class="cap-sub-btn" onclick="capSwitch('skyeye', this)">SkyEyeGPT</button>
+                    <button class="cap-sub-btn" onclick="capSwitch('lhrs', this)">LHRS-Bot</button>
+                </div>
+                <div style="font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-muted); margin-bottom:8px;">General-purpose models</div>
+                <div class="cap-subtabs" style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;">
+                    <button class="cap-sub-btn" onclick="capSwitch('internvl', this)">InternVL</button>
+                    <button class="cap-sub-btn" onclick="capSwitch('gpt', this)">GPT</button>
+                    <button class="cap-sub-btn" onclick="capSwitch('llava', this)">LLaVa</button>
+                    <button class="cap-sub-btn" onclick="capSwitch('glm', this)">GLM</button>
+                    <button class="cap-sub-btn" onclick="capSwitch('qwen', this)">Qwen</button>
+                    <button class="cap-sub-btn our-sub" onclick="capSwitch('rsivl', this)">IVL<sub>RS</sub> ★</button>
+                </div>
+            </div>
+
+            <!-- Sub-panels -->
+            <div style="padding:16px 20px;">
+
+                <div class="cap-panel active" id="cap-em_rgb">
+                    <div class="cap-panel-header">EarthMind<sub>rgb</sub> <span class="cap-modality">RGB</span></div>
+                    <p class="cap-text">This satellite image from GoogleEarth shows a rural landscape with a mix of agricultural fields and forested areas. The fields are primarily located in the central and bottom left sections of the image, with a notable concentration of greenery. The forested areas are more prominent in the top left and bottom right sections, with a dense cluster of trees. A water body is visible in the top right corner, adding to the rural character of the scene. The image is taken in a season where the vegetation is in full, indicating a time of growth or harvest. The overall scene is a blend of agricultural land and natural forest, with a water feature adding to the rural setting.</p>
+                </div>
+
+                <div class="cap-panel" id="cap-em_s1s2">
+                    <div class="cap-panel-header">EarthMind<sub>s1s2</sub> <span class="cap-modality">S1, S2</span></div>
+                    <p class="cap-text">This image shows a landscape with a mix of agricultural fields and forested areas. The fields are primarily located in the central and lower parts of the image, with a notable concentration in the bottom right. The forested areas are more prominent in the upper left and bottom left sections. The image is likely taken in a rural setting, possibly in a region with a combination of agricultural and natural land use. The presence of a water body on the right side suggests proximity to a river or lake, which could be a significant feature for the surrounding land use.</p>
+                </div>
+
+                <div class="cap-panel" id="cap-ed_rgb">
+                    <div class="cap-panel-header">EarthDial<sub>rgb</sub> <span class="cap-modality">RGB</span></div>
+                    <p class="cap-text">The satellite image shows a large area of farmland and a dense forest near the coast. The farmland is located in the center of the image, while the forest is located at the bottom left. The coast is visible at the top right of the image. The image likely represents a coastal region with a mix of agricultural and natural landscapes.</p>
+                </div>
+
+                <div class="cap-panel" id="cap-ed_s2">
+                    <div class="cap-panel-header">EarthDial<sub>s2</sub> <span class="cap-modality">S2</span></div>
+                    <p class="cap-text">The satellite image shows a land mixed in the left of the image, water in the right of the image.</p>
+                </div>
+
+                <div class="cap-panel" id="cap-geochat">
+                    <div class="cap-panel-header">GeoChat <span class="cap-modality">RGB</span></div>
+                    <p class="cap-text">The satellite image shows a diverse landscape with a mix of urban and natural features. The center of the image displays a roundabout, which is likely a busy intersection in a city or town. Surrounding the roundabout are various buildings, indicating a dense urban area. In the background, there are trees and a roundabout, suggesting a well-balanced blend of urban and green spaces. The presence of a roundabout and trees together indicates that the location is likely a well-developed and well-maintained area.</p>
+                </div>
+
+                <div class="cap-panel" id="cap-skyeye">
+                    <div class="cap-panel-header">SkyEyeGPT <span class="cap-modality">RGB</span></div>
+                    <p class="cap-text">many farmlands are near a body of water</p>
+                </div>
+
+                <div class="cap-panel" id="cap-lhrs">
+                    <div class="cap-panel-header">LHRS-Bot <span class="cap-modality">RGB</span></div>
+                    <p class="cap-text">Based on the provided image, the location appears to be a rural area with a mix of agricultural lands, forests, and water bodies. The image covers an area of approximately 144,000 square meters. Location: The image appears to be located in a temperate region, with a mix of flat and hilly terrain. The landscape features rolling hills, valleys, and a large lake in the center. Season: The image appears to be captured during the summer season, with lush green vegetation and full crops. Land Cover Types: 1. Agricultural lands including arable lands, pastures, and orchards; 2. Forests — both deciduous (oak, maple, beech) and evergreen (pine, spruce, fir); 3. Water bodies: a large lake surrounded by smaller ponds and streams; 4. Residential areas with small farms; 5. Roads and infrastructure; 6. Recreational areas. Overall, the image depicts a rural landscape with a mix of agricultural lands, forests, water bodies, and residential areas. The season is likely summer, with lush green vegetation and full crops.</p>
+                </div>
+
+                <div class="cap-panel" id="cap-internvl">
+                    <div class="cap-panel-header">InternVL3-1B <span class="cap-modality">RGB</span></div>
+                    <p class="cap-text">The satellite image shows a rural landscape with distinct agricultural fields, indicating a countryside setting. Location and Season: The image area spans 144,000 square meters. Given that it is a remote or aerial shot, it may have been taken in a time of year when the region is often in a different state of cultivation or growth, possibly indicating spring or summer. The vegetation seems lush, typical of a period when crops are actively harvested. Landscape Features: The landscape includes multiple fields of varying shades of green, with some sections showing more dense vegetation. There is a noticeable path or road cutting through the fields, running diagonally from the top left to the bottom right. The fields are organized in strips and patterns, suggesting structured farming practices. The surrounding area has dense greenery, indicating dense forests. The water body to the right is likely a large lake, river, or inlet. Overall, the image captures a serene rural landscape with organized agricultural fields, a path for transportation, and natural surroundings suggesting a transitional period between different seasons.</p>
+                </div>
+
+                <div class="cap-panel" id="cap-gpt">
+                    <div class="cap-panel-header">GPT <span class="cap-modality">RGB</span></div>
+                    <p class="cap-text">A small rural area of patchwork farmland bordered by dense green woodland, likely in a temperate region during late spring or summer, showing rectangular crop fields in varying shades of green and tan, a few scattered farm buildings and houses connected by narrow roads, and sharp field boundaries and hedgerows across the roughly 1.44 km² scene.</p>
+                </div>
+
+                <div class="cap-panel" id="cap-llava">
+                    <div class="cap-panel-header">LLaVa-OneVision <span class="cap-modality">RGB</span></div>
+                    <p class="cap-text">The image shows a rural landscape with a variety of green fields, indicating a lush and fertile area. There is a body of water on the right side, which could be a river or a lake. The fields are divided into different sections, suggesting a mix of agricultural activities such as crop rotation or different types of farming. There are also some structures visible, which could be farmhouses or small buildings, indicating human habitation and activity in the area. The presence of trees and the overall greenery suggest that the season could be spring or summer. The image does not provide enough detail to determine the exact location or the specific types of crops being grown.</p>
+                </div>
+
+                <div class="cap-panel" id="cap-glm">
+                    <div class="cap-panel-header">GLM-4.6-Flash <span class="cap-modality">RGB</span></div>
+                    <p class="cap-text">The satellite image depicts a rural landscape with a mix of agricultural fields, residential structures, and a body of water (likely a lake or river). The location appears to be a countryside area, possibly in a temperate region given the green vegetation. The season is likely spring or summer, as the fields are lush and green, indicating active vegetation growth. Key landscape features include rectangular agricultural plots (suggesting organized farming), a cluster of buildings (residential or small-scale rural development), and a large water body to the right, which may serve as a natural boundary or resource for the area. The overall scene reflects a blend of human settlement and agricultural land use in a natural setting.</p>
+                </div>
+
+                <div class="cap-panel" id="cap-qwen">
+                    <div class="cap-panel-header">Qwen3-VL <span class="cap-modality">RGB</span></div>
+                    <p class="cap-text">Based on the satellite image and the provided area, this image displays a rural landscape located in the Czech Republic, specifically in the South Bohemian Region. The image captures a patchwork of agricultural fields adjacent to a large body of water. Season: The image was likely taken during late spring or early summer. Landscape Features: Agricultural fields are the dominant feature, divided into rectangular plots of varying shades of green and brown, representing different crops or stages of growth. A large, dark body of water occupies the right side of the image. A network of roads connects the fields and a small cluster of buildings visible near the center-left. Darker green patches along the edges indicate forests or wooded areas. The terrain appears relatively flat, typical of the Bohemian lowlands. The 1,440,000 m² area encompasses this entire scene, highlighting the interplay between agriculture, water, and human habitation.</p>
+                </div>
+
+                <div class="cap-panel" id="cap-rsivl">
+                    <div class="cap-panel-header" style="color:var(--accent-2,#0e4a6b);">RS-InternVL <span class="cap-modality" style="background:var(--accent-pale,#e8f3f9);color:var(--accent,#1d6a8c);">RGB, S1, S2</span> <span style="font-size:.7rem;color:var(--sat,#2e7d52);font-weight:700;">★ Ours</span></div>
+                    <p class="cap-text" style="background:var(--accent-pale,#e8f3f9);border-radius:6px;padding:10px;">The image, captured during the <strong>summer season in Switzerland</strong>, showcases a diverse landscape within the "temperate, no dry season, warm summer" climate zone. The dominant feature is arable land, spanning approximately 787,000 square meters, which is distributed across two areas, one large (~786,000 m²) and one marginal. The arable land borders with inland waters (~350,000 m²), mixed forest (~209,000 m²), and urban fabric (~72,000 m²). The inland waters are adjacent to the mixed forest, which is spread over two areas. The landscape presents a mix of agricultural areas, water bodies, and artificial surfaces, highlighting the varied ecosystems within this region.</p>
+                </div>
+
+            </div><!-- /sub-panels -->
+        </div><!-- /qual-card -->
+    </div><!-- /qual-cap panel -->
+</section>
