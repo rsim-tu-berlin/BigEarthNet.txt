@@ -1,0 +1,623 @@
+<!-- Qualitative Results Tabs — include via fetch() in index.html -->
+<style>
+    .qual-section { padding: 56px 0 0; }
+
+    /* ── Tab row ── */
+    .qual-tabs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+    .qual-tab-btn {
+        font-family: var(--font-sans, sans-serif);
+        font-size: .78rem;
+        font-weight: 500;
+        color: var(--ink-muted, #52525b);
+        background: var(--bg-card, #fff);
+        border: 1px solid var(--border, #e4e4e7);
+        border-radius: 8px;
+        padding: 7px 14px;
+        cursor: pointer;
+        transition: all .15s;
+        white-space: nowrap;
+        line-height: 1.4;
+        text-align: left;
+    }
+    .qual-tab-btn:hover {
+        background: var(--accent-pale, #e8f3f9);
+        color: var(--accent, #1d6a8c);
+        border-color: var(--accent, #1d6a8c);
+    }
+    .qual-tab-btn.active {
+        background: var(--accent, #1d6a8c);
+        color: #fff;
+        border-color: var(--accent, #1d6a8c);
+    }
+    .qual-tab-btn .tab-category {
+        display: block;
+        font-size: .65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .07em;
+        opacity: .75;
+        margin-bottom: 2px;
+    }
+    .qual-tab-btn.active .tab-category { opacity: .85; }
+
+    /* ── Panel ── */
+    .qual-panel { display: none; margin-top: 20px; }
+    .qual-panel.active { display: block; }
+
+    /* ── Panel layout ── */
+    .qual-card {
+        background: var(--bg-card, #fff);
+        border: 1px solid var(--border, #e4e4e7);
+        border-radius: var(--radius-lg, 16px);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+    }
+
+    /* Question header */
+    .qual-question {
+        background: #f1f5f9;
+        padding: 14px 20px;
+        font-size: .88rem;
+        font-weight: 600;
+        color: var(--ink, #18181b);
+        border-bottom: 1px solid var(--border, #e4e4e7);
+        line-height: 1.45;
+    }
+    .qual-question .task-badge {
+        display: inline-block;
+        font-size: .65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        color: var(--accent, #1d6a8c);
+        background: var(--accent-pale, #e8f3f9);
+        border: 1px solid #bfdbee;
+        border-radius: 4px;
+        padding: 2px 7px;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    /* MCQ choices */
+    .qual-choices {
+        padding: 10px 20px 4px;
+        font-size: .83rem;
+        color: var(--ink-muted, #52525b);
+        border-bottom: 1px solid var(--border, #e4e4e7);
+        line-height: 1.8;
+    }
+    .qual-choices .correct { color: #16a34a; font-weight: 600; }
+
+    /* Main body: images | table | refmap */
+    .qual-body {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 0;
+    }
+    @media (max-width: 700px) {
+        .qual-body { grid-template-columns: 1fr; }
+    }
+
+    /* Image column */
+    .qual-images {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        border-right: 1px solid var(--border, #e4e4e7);
+        padding: 14px 14px 14px 20px;
+        gap: 10px;
+        align-items: center;
+    }
+    .qual-img-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+    .qual-img-wrap img {
+        width: 110px;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid var(--border, #e4e4e7);
+        display: block;
+    }
+    .qual-img-label {
+        font-size: .68rem;
+        color: var(--ink-light, #a1a1aa);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+
+    /* Model answer table */
+    .qual-table-wrap {
+        overflow-x: auto;
+        padding: 0;
+    }
+    .qual-model-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: .76rem;
+    }
+    .qual-model-table thead th {
+        background: #f8fafc;
+        padding: 7px 12px;
+        font-weight: 600;
+        font-size: .68rem;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        color: var(--ink-muted, #52525b);
+        border-bottom: 1px solid var(--border, #e4e4e7);
+        text-align: left;
+    }
+    .qual-model-table thead th:last-child { text-align: center; }
+    .qual-model-table tbody td {
+        padding: 5px 12px;
+        border-bottom: 1px solid var(--border, #e4e4e7);
+        color: var(--ink-muted, #52525b);
+        vertical-align: middle;
+    }
+    .qual-model-table tbody tr:last-child td { border-bottom: none; }
+    .qual-model-table tbody tr:nth-child(even) td { background: #f8fafc; }
+    .qual-model-table td.model-name {
+        font-family: var(--font-mono, monospace);
+        font-size: .72rem;
+        color: var(--ink, #18181b);
+        white-space: nowrap;
+    }
+    .qual-model-table td.answer { color: var(--ink, #18181b); }
+    .qual-model-table td.correct-col { text-align: center; font-size: .85rem; }
+    .ic-correct { color: #16a34a; }
+    .ic-wrong   { color: #dc2626; }
+
+    /* RS-InternVL highlight */
+    .qual-model-table tr.our-row td {
+        background: var(--accent-pale, #e8f3f9) !important;
+        font-weight: 600;
+    }
+    .qual-model-table tr.our-row td.model-name { color: var(--accent-2, #0e4a6b); }
+
+    /* Reference map column */
+    .qual-refmap {
+        border-left: 1px solid var(--border, #e4e4e7);
+        padding: 14px 20px 14px 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        min-width: 140px;
+    }
+    .qual-refmap img {
+        width: 110px;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid var(--border, #e4e4e7);
+    }
+    .qual-refmap-label {
+        font-size: .68rem;
+        color: var(--ink-light, #a1a1aa);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+    .qual-legend {
+        font-size: .7rem;
+        color: var(--ink-muted, #52525b);
+        line-height: 1.7;
+    }
+    .legend-swatch {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        margin-right: 4px;
+        vertical-align: middle;
+        flex-shrink: 0;
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        margin-bottom: 2px;
+    }
+
+    /* Ground truth row */
+    .qual-gt {
+        background: #f0fdf4;
+        border-top: 1px solid #bbf7d0;
+        padding: 8px 20px;
+        font-size: .78rem;
+        color: #166534;
+    }
+    .qual-gt strong { font-weight: 600; }
+
+    /* Caption */
+    .qual-caption {
+        font-size: .78rem;
+        color: var(--ink-muted, #52525b);
+        margin-top: 10px;
+        text-align: center;
+        line-height: 1.6;
+    }
+</style>
+
+<section class="qual-section" id="qualitative">
+    <p>
+        <b>Qualitative Results:</b> Example predictions across binary VQA, MCQ, and referring expression detection.
+        S2 input shown as true color RGB; S1 as (RGB: VV, VH, VV/VH).
+        Reference maps are provided as reader aid only — not given to the models.
+        <em>—</em> indicates the answer could not be extracted.
+    </p>
+
+    <div class="qual-tabs" role="tablist">
+        <!-- Binary VQA -->
+        <button class="qual-tab-btn active" role="tab" onclick="qualSwitch('bvqa1', this)">
+            <span class="tab-category">Binary VQA</span>
+            Coniferous ↔ Mixed forest
+        </button>
+        <button class="qual-tab-btn" role="tab" onclick="qualSwitch('bvqa2', this)">
+            <span class="tab-category">Binary VQA</span>
+            Single urban region?
+        </button>
+        <!-- MCQ -->
+        <button class="qual-tab-btn" role="tab" onclick="qualSwitch('mcq1', this)">
+            <span class="tab-category">MCQ</span>
+            Country identification
+        </button>
+        <button class="qual-tab-btn" role="tab" onclick="qualSwitch('mcq2', this)">
+            <span class="tab-category">MCQ</span>
+            Present land cover class
+        </button>
+        <!-- Detection -->
+        <button class="qual-tab-btn" role="tab" onclick="qualSwitch('det1', this)">
+            <span class="tab-category">Ref. Exp. Detection</span>
+            Broad-leaved forest
+        </button>
+        <button class="qual-tab-btn" role="tab" onclick="qualSwitch('det2', this)">
+            <span class="tab-category">Ref. Exp. Detection</span>
+            Point-based detection
+        </button>
+    </div>
+
+    <!-- ══════════════ BINARY VQA 1 ══════════════ -->
+    <div class="qual-panel active" id="qual-bvqa1" role="tabpanel">
+        <div class="qual-card">
+            <div class="qual-question">
+                <span class="task-badge">Binary VQA</span>
+                Do regions of any coniferous forest directly adjoin a mixed forest?
+            </div>
+            <div class="qual-body">
+                <div class="qual-images">
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_tci_S2B_MSIL2A_20180502T093039_N9999_R136_T34TEP_40_38.png" alt="S2 image"/>
+                        <span class="qual-img-label">S2</span>
+                    </div>
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_rtc_S2B_MSIL2A_20180502T093039_N9999_R136_T34TEP_40_38.png" alt="S1 image"/>
+                        <span class="qual-img-label">S1</span>
+                    </div>
+                </div>
+                <div class="qual-table-wrap">
+                    <table class="qual-model-table">
+                        <thead><tr><th>Model</th><th>Answer</th><th>✓</th></tr></thead>
+                        <tbody>
+                        <tr><td class="model-name">GeoChat</td>     <td class="answer">yes</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">LHRS-Bot</td>    <td class="answer">yes</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">SkyEyeGPT</td>   <td class="answer">yes</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">ED<sub>rgb</sub></td>  <td class="answer">no</td> <td class="correct-col"><span class="ic-correct">✓</span></td></tr>
+                        <tr><td class="model-name">ED<sub>s2</sub></td>   <td class="answer">yes</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">EM<sub>rgb</sub></td>  <td class="answer">yes</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">EM<sub>s1s2</sub></td> <td class="answer">yes</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">GPT</td>          <td class="answer">yes</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">Qwen</td>         <td class="answer">yes</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">GLM</td>          <td class="answer">yes</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">LLaVa</td>        <td class="answer">yes</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">IVL</td>          <td class="answer">no</td> <td class="correct-col"><span class="ic-correct">✓</span></td></tr>
+                        <tr class="our-row"><td class="model-name">IVL<sub>RS</sub></td><td class="answer">no</td><td class="correct-col"><span class="ic-correct">✓</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="qual-refmap">
+                    <img src="static/images/dataset/samples/_ref_map_S2B_MSIL2A_20180502T093039_N9999_R136_T34TEP_40_38.png" alt="Reference map"/>
+                    <span class="qual-refmap-label">Reference map</span>
+                    <div class="qual-legend">
+                        <div class="legend-item"><span class="legend-swatch" style="background:#e8c46a;"></span>Arable land</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#3a7d44;"></span>Broad-leaved forest</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#a8c97f;"></span>Trans. woodland, shrub</div>
+                    </div>
+                </div>
+            </div>
+            <div class="qual-gt"><strong>Ground truth:</strong> no</div>
+        </div>
+    </div>
+
+    <!-- ══════════════ BINARY VQA 2 ══════════════ -->
+    <div class="qual-panel" id="qual-bvqa2" role="tabpanel">
+        <div class="qual-card">
+            <div class="qual-question">
+                <span class="task-badge">Binary VQA</span>
+                Is there only a single continuous region of urban fabrics visible in the image?
+            </div>
+            <div class="qual-body">
+                <div class="qual-images">
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_tci_S2B_MSIL2A_20170914T093029_N9999_R136_T34TEQ_28_24.png" alt="S2 image"/>
+                        <span class="qual-img-label">S2</span>
+                    </div>
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_rtc_S2B_MSIL2A_20170914T093029_N9999_R136_T34TEQ_28_24.png" alt="S1 image"/>
+                        <span class="qual-img-label">S1</span>
+                    </div>
+                </div>
+                <div class="qual-table-wrap">
+                    <table class="qual-model-table">
+                        <thead><tr><th>Model</th><th>Answer</th><th>✓</th></tr></thead>
+                        <tbody>
+                        <tr><td class="model-name">GeoChat</td>     <td class="answer">no</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">LHRS-Bot</td>    <td class="answer">yes</td><td class="correct-col"><span class="ic-correct">✓</span></td></tr>
+                        <tr><td class="model-name">SkyEyeGPT</td>   <td class="answer">yes</td><td class="correct-col"><span class="ic-correct">✓</span></td></tr>
+                        <tr><td class="model-name">ED<sub>rgb</sub></td>  <td class="answer">yes</td><td class="correct-col"><span class="ic-correct">✓</span></td></tr>
+                        <tr><td class="model-name">ED<sub>s2</sub></td>   <td class="answer">no</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">EM<sub>rgb</sub></td>  <td class="answer">no</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">EM<sub>s1s2</sub></td> <td class="answer">no</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">GPT</td>          <td class="answer">no</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">Qwen</td>         <td class="answer">no</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">GLM</td>          <td class="answer">yes</td><td class="correct-col"><span class="ic-correct">✓</span></td></tr>
+                        <tr><td class="model-name">LLaVa</td>        <td class="answer">no</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">IVL</td>          <td class="answer">no</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr class="our-row"><td class="model-name">IVL<sub>RS</sub></td><td class="answer">yes</td><td class="correct-col"><span class="ic-correct">✓</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="qual-refmap">
+                    <img src="static/images/dataset/samples/_ref_map_S2B_MSIL2A_20170914T093029_N9999_R136_T34TEQ_28_24.png" alt="Reference map"/>
+                    <span class="qual-refmap-label">Reference map</span>
+                    <div class="qual-legend">
+                        <div class="legend-item"><span class="legend-swatch" style="background:#e8c46a;"></span>Arable land</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#d4a843;"></span>Complex cultivation</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#c0392b;"></span>Urban fabric</div>
+                    </div>
+                </div>
+            </div>
+            <div class="qual-gt"><strong>Ground truth:</strong> yes</div>
+        </div>
+    </div>
+
+    <!-- ══════════════ MCQ 1 ══════════════ -->
+    <div class="qual-panel" id="qual-mcq1" role="tabpanel">
+        <div class="qual-card">
+            <div class="qual-question">
+                <span class="task-badge">MCQ</span>
+                Identify the country depicted in the satellite image:
+            </div>
+            <div class="qual-choices">
+                a) Austria &nbsp;&nbsp; b) Switzerland &nbsp;&nbsp; c) Luxembourg &nbsp;&nbsp;
+                <span class="correct">d) Serbia ✓</span>
+            </div>
+            <div class="qual-body">
+                <div class="qual-images">
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_tci_S2B_MSIL2A_20170914T093029_N9999_R136_T34TEQ_24_56.png" alt="S2 image"/>
+                        <span class="qual-img-label">S2</span>
+                    </div>
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_rtc_S2B_MSIL2A_20170914T093029_N9999_R136_T34TEQ_24_56.png" alt="S1 image"/>
+                        <span class="qual-img-label">S1</span>
+                    </div>
+                </div>
+                <div class="qual-table-wrap">
+                    <table class="qual-model-table">
+                        <thead><tr><th>Model</th><th>Answer</th><th>✓</th></tr></thead>
+                        <tbody>
+                        <tr><td class="model-name">GeoChat</td>     <td class="answer">a</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">LHRS-Bot</td>    <td class="answer">d</td><td class="correct-col"><span class="ic-correct">✓</span></td></tr>
+                        <tr><td class="model-name">SkyEyeGPT</td>   <td class="answer">c</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">ED<sub>rgb</sub></td>  <td class="answer">a</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">ED<sub>s2</sub></td>   <td class="answer">a</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">EM<sub>rgb</sub></td>  <td class="answer">c</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">EM<sub>s1s2</sub></td> <td class="answer">d</td><td class="correct-col"><span class="ic-correct">✓</span></td></tr>
+                        <tr><td class="model-name">GPT</td>          <td class="answer">c</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">Qwen</td>         <td class="answer">a</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">GLM</td>          <td class="answer">c</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">LLaVa</td>        <td class="answer">b</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">IVL</td>          <td class="answer">b</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr class="our-row"><td class="model-name">IVL<sub>RS</sub></td><td class="answer">d</td><td class="correct-col"><span class="ic-correct">✓</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="qual-refmap">
+                    <img src="static/images/dataset/samples/_ref_map_S2B_MSIL2A_20170914T093029_N9999_R136_T34TEQ_24_56.png" alt="Reference map"/>
+                    <span class="qual-refmap-label">Reference map</span>
+                    <div class="qual-legend">
+                        <div class="legend-item"><span class="legend-swatch" style="background:#e8c46a;"></span>Arable land</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#8db87a;"></span>Land w/ natural veg.</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#a8c97f;"></span>Trans. woodland, shrub</div>
+                    </div>
+                </div>
+            </div>
+            <div class="qual-gt"><strong>Ground truth:</strong> d) Serbia</div>
+        </div>
+    </div>
+
+    <!-- ══════════════ MCQ 2 ══════════════ -->
+    <div class="qual-panel" id="qual-mcq2" role="tabpanel">
+        <div class="qual-card">
+            <div class="qual-question">
+                <span class="task-badge">MCQ</span>
+                From the following classes, select the one that is present:
+            </div>
+            <div class="qual-choices">
+                a) Broad-leaved forest &nbsp;&nbsp;
+                <span class="correct">b) Coniferous forest ✓</span>
+                &nbsp;&nbsp; c) Coastal wetlands &nbsp;&nbsp; d) Inland wetlands
+            </div>
+            <div class="qual-body">
+                <div class="qual-images">
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_tci_S2A_MSIL2A_20170905T095031_N9999_R079_T35VNL_68_40.png" alt="S2 image"/>
+                        <span class="qual-img-label">S2</span>
+                    </div>
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_rtc_S2A_MSIL2A_20170905T095031_N9999_R079_T35VNL_68_40.png" alt="S1 image"/>
+                        <span class="qual-img-label">S1</span>
+                    </div>
+                </div>
+                <div class="qual-table-wrap">
+                    <table class="qual-model-table">
+                        <thead><tr><th>Model</th><th>Answer</th><th>✓</th></tr></thead>
+                        <tbody>
+                        <tr><td class="model-name">GeoChat</td>     <td class="answer">a</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">LHRS-Bot</td>    <td class="answer">a</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">SkyEyeGPT</td>   <td class="answer">a</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">ED<sub>rgb</sub></td>  <td class="answer">—</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">ED<sub>s2</sub></td>   <td class="answer">d</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">EM<sub>rgb</sub></td>  <td class="answer">—</td><td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">EM<sub>s1s2</sub></td> <td class="answer">a</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">GPT</td>          <td class="answer">a</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">Qwen</td>         <td class="answer">a</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">GLM</td>          <td class="answer">a</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">LLaVa</td>        <td class="answer">a</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr><td class="model-name">IVL</td>          <td class="answer">a</td> <td class="correct-col"><span class="ic-wrong">✗</span></td></tr>
+                        <tr class="our-row"><td class="model-name">IVL<sub>RS</sub></td><td class="answer">b</td><td class="correct-col"><span class="ic-correct">✓</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="qual-refmap">
+                    <img src="static/images/dataset/samples/_ref_map_S2A_MSIL2A_20170905T095031_N9999_R079_T35VNL_68_40.png" alt="Reference map"/>
+                    <span class="qual-refmap-label">Reference map</span>
+                    <div class="qual-legend">
+                        <div class="legend-item"><span class="legend-swatch" style="background:#2d6a2d;"></span>Coniferous forest</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#5a9e5a;"></span>Mixed forest</div>
+                    </div>
+                </div>
+            </div>
+            <div class="qual-gt"><strong>Ground truth:</strong> b) Coniferous forest</div>
+        </div>
+    </div>
+
+    <!-- ══════════════ DETECTION 1 ══════════════ -->
+    <div class="qual-panel" id="qual-det1" role="tabpanel">
+        <div class="qual-card">
+            <div class="qual-question">
+                <span class="task-badge">Ref. Exp. Detection</span>
+                Point out a continuous area of broad-leaved forest in the scene.
+            </div>
+            <div class="qual-choices" style="color:#16a34a; font-weight:600;">
+                Ground truth box: [0.0, 0.44, 0.35, 1.0]
+            </div>
+            <div class="qual-body">
+                <div class="qual-images">
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_tci_S2A_MSIL2A_20170613T101031_N9999_R022_T33UUP_32_64.png" alt="S2 image"/>
+                        <span class="qual-img-label">S2</span>
+                    </div>
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_rtc_S2A_MSIL2A_20170613T101031_N9999_R022_T33UUP_32_64.png" alt="S1 image"/>
+                        <span class="qual-img-label">S1</span>
+                    </div>
+                </div>
+                <div class="qual-table-wrap">
+                    <table class="qual-model-table">
+                        <thead><tr><th>Model</th><th>Predicted Box</th></tr></thead>
+                        <tbody>
+                        <tr><td class="model-name">GeoChat</td>     <td class="answer">[0.0, 0.57, 0.24, 0.89]</td></tr>
+                        <tr><td class="model-name">LHRS-Bot</td>    <td class="answer">[0.45, 0.45, 0.89, 0.89]</td></tr>
+                        <tr><td class="model-name">SkyEyeGPT</td>   <td class="answer">[0.65, 0.19, 0.83, 0.4]</td></tr>
+                        <tr><td class="model-name">ED<sub>rgb</sub></td>  <td class="answer">[0.0, 0.79, 0.21, 0.91]</td></tr>
+                        <tr><td class="model-name">ED<sub>s2</sub></td>   <td class="answer">—</td></tr>
+                        <tr><td class="model-name">EM<sub>rgb</sub></td>  <td class="answer">[0.08, 0.05, 0.52, 0.97]</td></tr>
+                        <tr><td class="model-name">EM<sub>s1s2</sub></td> <td class="answer">[0.74, 0.25, 0.98, 0.63]</td></tr>
+                        <tr><td class="model-name">GPT</td>          <td class="answer">[0.02, 0.29, 0.34, 0.97]</td></tr>
+                        <tr><td class="model-name">Qwen</td>         <td class="answer">[0.0, 0.0, 0.17, 0.25]</td></tr>
+                        <tr><td class="model-name">GLM</td>          <td class="answer">[0.0, 0.0, 1.0, 1.0]</td></tr>
+                        <tr><td class="model-name">LLaVa</td>        <td class="answer">[0.0, 0.67, 0.21, 0.99]</td></tr>
+                        <tr><td class="model-name">IVL</td>          <td class="answer">—</td></tr>
+                        <tr class="our-row"><td class="model-name">IVL<sub>RS</sub></td><td class="answer">[0.0, 0.45, 0.35, 1.0]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="qual-refmap">
+                    <img src="static/images/dataset/samples/_ref_map_S2A_MSIL2A_20170613T101031_N9999_R022_T33UUP_32_64_bb2.png" alt="Reference map"/>
+                    <span class="qual-refmap-label">Reference map</span>
+                    <div class="qual-legend">
+                        <div class="legend-item"><span class="legend-swatch" style="background:#c0392b;"></span>Urban fabric</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#7f8c8d;"></span>Industrial units</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#e8c46a;"></span>Arable land</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#c8a05a;"></span>Pastures</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#d4a843;"></span>Complex cultivation</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#8db87a;"></span>Land w/ natural veg.</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#3a7d44;"></span>Broad-leaved forest</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════ DETECTION 2 ══════════════ -->
+    <div class="qual-panel" id="qual-det2" role="tabpanel">
+        <div class="qual-card">
+            <div class="qual-question">
+                <span class="task-badge">Ref. Exp. Detection</span>
+                Output a bounding box surrounding the land cover class instance positioned at (0.92, 0.05) in the image.
+            </div>
+            <div class="qual-choices" style="color:#16a34a; font-weight:600;">
+                Ground truth box: [0.81, 0.0, 1.0, 0.12]
+            </div>
+            <div class="qual-body">
+                <div class="qual-images">
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_tci_S2B_MSIL2A_20180525T094029_N9999_R036_T35VNL_43_61.png" alt="S2 image"/>
+                        <span class="qual-img-label">S2</span>
+                    </div>
+                    <div class="qual-img-wrap">
+                        <img src="static/images/dataset/samples/_rtc_S2B_MSIL2A_20180525T094029_N9999_R036_T35VNL_43_61.png" alt="S1 image"/>
+                        <span class="qual-img-label">S1</span>
+                    </div>
+                </div>
+                <div class="qual-table-wrap">
+                    <table class="qual-model-table">
+                        <thead><tr><th>Model</th><th>Predicted Box</th></tr></thead>
+                        <tbody>
+                        <tr><td class="model-name">GeoChat</td>     <td class="answer">[0.84, 0.0, 0.96, 0.2]</td></tr>
+                        <tr><td class="model-name">LHRS-Bot</td>    <td class="answer">[0.92, 0.05, 0.92, 0.05]</td></tr>
+                        <tr><td class="model-name">SkyEyeGPT</td>   <td class="answer">—</td></tr>
+                        <tr><td class="model-name">ED<sub>rgb</sub></td>  <td class="answer">[0.06, 0.49, 0.1, 0.55, 0.0]</td></tr>
+                        <tr><td class="model-name">ED<sub>s2</sub></td>   <td class="answer">—</td></tr>
+                        <tr><td class="model-name">EM<sub>rgb</sub></td>  <td class="answer">[0.0, 0.23, 0.08, 0.92]</td></tr>
+                        <tr><td class="model-name">EM<sub>s1s2</sub></td> <td class="answer">[0.86, 0.22, 0.86, 0.22]</td></tr>
+                        <tr><td class="model-name">GPT</td>          <td class="answer">[0.0, 0.0, 1.0, 1.0]</td></tr>
+                        <tr><td class="model-name">Qwen</td>         <td class="answer">[0.91, 0.04, 1.0, 0.08]</td></tr>
+                        <tr><td class="model-name">GLM</td>          <td class="answer">[0.85, 0.0, 1.0, 0.26]</td></tr>
+                        <tr><td class="model-name">LLaVa</td>        <td class="answer">[0.786, 0.054, 0.998, 0.308]</td></tr>
+                        <tr><td class="model-name">IVL</td>          <td class="answer">[0.93, 0.29, 0.94, 0.61]</td></tr>
+                        <tr class="our-row"><td class="model-name">IVL<sub>RS</sub></td><td class="answer">[0.8, 0.0, 1.0, 0.13]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="qual-refmap">
+                    <img src="static/images/dataset/samples/_ref_map_S2B_MSIL2A_20180525T094029_N9999_R036_T35VNL_43_61_bb2.png" alt="Reference map"/>
+                    <span class="qual-refmap-label">Reference map</span>
+                    <div class="qual-legend">
+                        <div class="legend-item"><span class="legend-swatch" style="background:#8db87a;"></span>Land w/ natural veg.</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#2d6a2d;"></span>Coniferous forest</div>
+                        <div class="legend-item"><span class="legend-swatch" style="background:#5a9e5a;"></span>Mixed forest</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p class="qual-caption">
+        S2 input: true color RGB. S1 input: RGB = VV, VH, VV/VH.
+        Reference maps are provided as reader aid only and are not given as model input.
+        IVL<sub>RS</sub> = RS-InternVL (ours). — = answer could not be extracted.
+    </p>
+</section>
+
