@@ -44,12 +44,12 @@ function copyBibTeX(btn) {
     if (bibtexElement) {
         navigator.clipboard.writeText(bibtexElement.textContent).then(function() {
             // Success feedback
-            button.classList.add('copied');
+            btn.classList.add('copied');
             copyText.textContent = 'Cop';
 
             setTimeout(function() {
-                button.classList.remove('copied');
-                copyText.textContent = 'Copy';
+                btn.classList.remove('copied');
+                copyText.textContent = 'Copy BibTex';
             }, 2000);
         }).catch(function(err) {
             console.error('Failed to copy: ', err);
@@ -61,10 +61,10 @@ function copyBibTeX(btn) {
             document.execCommand('copy');
             document.body.removeChild(textArea);
 
-            button.classList.add('copied');
+            btn.classList.add('copied');
             copyText.textContent = 'Copied';
             setTimeout(function() {
-                button.classList.remove('copied');
+                btn.classList.remove('copied');
                 copyText.textContent = 'Copy';
             }, 2000);
         });
@@ -79,12 +79,12 @@ function copyMLA(btn) {
     if (bibtexElement) {
         navigator.clipboard.writeText(bibtexElement.textContent).then(function() {
             // Success feedback
-            button.classList.add('copied');
+            btn.classList.add('copied');
             copyText.textContent = 'Copied';
 
             setTimeout(function() {
-                button.classList.remove('copied');
-                copyText.textContent = 'Copy';
+                btn.classList.remove('copied');
+                copyText.textContent = 'Copy MLA';
             }, 2000);
         }).catch(function(err) {
             console.error('Failed to copy: ', err);
@@ -96,10 +96,10 @@ function copyMLA(btn) {
             document.execCommand('copy');
             document.body.removeChild(textArea);
 
-            button.classList.add('copied');
+            btn.classList.add('copied');
             copyText.textContent = 'Cop';
             setTimeout(function() {
-                button.classList.remove('copied');
+                btn.classList.remove('copied');
                 copyText.textContent = 'Copy';
             }, 2000);
         });
