@@ -263,10 +263,10 @@
         overflow-x: auto;
     ">
         <a href="#jmp_abstract"    class="nav-jump">Abstract</a>
-        <a href="#jmp_figures"     class="nav-jump">Figures</a>
-        <a href="#jmp_comparison"  class="nav-jump">Comparison</a>
+        <a href="#jmp_figures"     class="nav-jump">Overview</a>
         <a href="#jmp_results"     class="nav-jump">Results</a>
-        <a href="#jmp_qualitative" class="nav-jump">Qualitative</a>
+        <!-- <a href="#jmp_qualitative" class="nav-jump">Qualitative</a> -->
+        <a href="#jmp_comparison"  class="nav-jump">Comparison</a>
         <a href="#jmp_paper"       class="nav-jump">Paper</a>
         <a href="#jmp_citation"      class="nav-jump">Citation</a>
     </div>
@@ -445,15 +445,6 @@
 
 
 
-                    <span class="link-block">
-                  <a href="mailto:contact@bigearth.net" target="_blank"
-                     class="external-link button is-normal is-rounded is-rounded" style="background-color: #7ecce0; color: #000000;">
-                  <span class="icon">
-                    <i class="far fa-envelope"></i>
-                  </span>
-                  <span>Contact</span>
-                </a>
-              </span>
                             </div>
                         </div>
                     </div>
@@ -524,6 +515,9 @@
     <section id="jmp_figures" class="anchor hero is-small">
         <div class="hero-body">
             <div class="container">
+                <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                <h2 class="title is-3">Overview</h2>
                 <div id="results-carousel" class="carousel results-carousel">
                     <div class="item">
                         <img src="static/images/generation.svg"
@@ -560,34 +554,14 @@
                         </h2>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
     </section>
     <!-- End image carousel -->
 
-    <!-- Table existing dataset -->
-    <section id="jmp_comparison" class="anchor hero is-small is-light">
-        <div class="hero-body">
-            <div class="container">
-                <div class="columns is-centered has-text-centered">
-                    <div class="column is-four-fifths">
-                        <h2 class="title is-3">Comparison with Existing RS Image-Text Datasets</h2>
-                        <div id="dataset-table"></div>
-                        <script>
-                            fetch('static/tables/tab_comp_existing_v2.html')
-                                .then(r => r.text())
-                                .then(html => document.getElementById('dataset-table').innerHTML = html);
-                        </script>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End table existing -->
-
-
     <!-- Result tables carousel -->
-    <section id="jmp_results" class="anchor hero is-small">
+    <section id="jmp_results" class="anchor hero is-small is-light">
         <div class="hero-body">
             <div class="container">
                 <div class="columns is-centered has-text-centered">
@@ -648,7 +622,7 @@
             <div class="container">
                 <div class="columns is-centered has-text-centered">
                     <div class="column is-four-fifths">
-                        <h2 class="title is-3">Qualitative Examples</h2>
+                        <!-- <h2 class="title is-3">Qualitative Examples</h2> -->
                         <div id="qualitative-section"></div>
                     </div>
                 </div>
@@ -679,8 +653,29 @@
     </script>
     <!-- End Qualitative Results -->
 
+    <!-- Table existing dataset -->
+    <section id="jmp_comparison" class="anchor hero is-small">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered has-text-centered">
+                    <div class="column is-four-fifths">
+                        <h2 class="title is-3">Comparison with Existing RS Image-Text Datasets</h2>
+                        <div id="dataset-table"></div>
+                        <script>
+                            fetch('static/tables/tab_comp_existing_v2.html')
+                                .then(r => r.text())
+                                .then(html => document.getElementById('dataset-table').innerHTML = html);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End table existing -->
+
+
     <!-- Paper -->
-    <section id="jmp_paper" class="anchor hero is-small">
+    <section id="jmp_paper" class="anchor hero is-small is-light">
         <div class="hero-body">
             <div class="container">
                 <div class="columns is-centered has-text-centered">
