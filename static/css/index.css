@@ -38,6 +38,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.anchor {
+    scroll-margin-top: 40px;
+}
+
 
 /* Modern Button Styles */
 .button {
