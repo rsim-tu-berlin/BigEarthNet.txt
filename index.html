@@ -697,22 +697,32 @@
 
 
     <!--BibTex citation -->
-    <section id="jmp_citation" class="section" id="BibTeX">
+    <section id="jmp_citation" class="section">
         <div class="container is-max-desktop content">
+
             <div class="bibtex-header">
                 <h2 class="title">Citation</h2>
-                <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
-                    <i class="fas fa-copy"></i>
-                    <span class="copy-text">Copy</span>
-                </button>
+                <div style="display:flex; gap:8px;">
+                    <button class="copy-bibtex-btn" onclick="copyMLA(this)" title="Copy MLA">
+                        <i class="fas fa-copy"></i>
+                        <span class="copy-mla-text">Copy MLA</span>
+                    </button>
+                    <button class="copy-bibtex-btn" onclick="copyBibTeX(this)" title="Copy BibTeX">
+                        <i class="fas fa-copy"></i>
+                        <span class="copy-text">Copy BibTeX</span>
+                    </button>
+                </div>
             </div>
+            <pre id="mla-code">Herzog, Johann-Ludwig, et al. <i>"BigEarthNet.txt: A Large-Scale Multi-Sensor Image-Text Dataset and
+Benchmark for Earth Observation."</i> Preprint, 2026, https://txt.bigearth.net.</pre>
             <pre id="bibtex-code"><code>@article{Herzog2026BigEarthNetTXT,
   title={BigEarthNet.txt: A Large-Scale Multi-Sensor Image-Text Dataset and Benchmark for Earth Observation},
   author={Johann-Ludwig Herzog and Mathis Jürgen Adler and Leonard Hackel and Yan Shu and Angelos Zavras and Ioannis Papoutsis and Paolo Rota and Begüm Demir},
   journal={Preprint},
   year={2026},
-  url={https://rsim-tu-berlin.github.io/BigEarthNet.txt/},
+  url={https://txt.bigearth.net},
 }</code></pre>
+
         </div>
     </section>
     <!--End BibTex citation -->
