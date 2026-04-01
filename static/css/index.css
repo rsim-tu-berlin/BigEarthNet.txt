@@ -607,6 +607,16 @@ code {
   .hero-body {
     padding: 2rem 1rem;
   }
+
+  .bibtex-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .more-works-container {
+    display: none;
+  }
   
   .publication-header .hero-body {
     padding: 3rem 1rem 2rem;
