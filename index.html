@@ -117,6 +117,7 @@
     <script defer src="static/js/bulma-carousel.min.js"></script>
     <script defer src="static/js/bulma-slider.min.js"></script>
     <script defer src="static/js/index.js"></script>
+    <script defer type="module" src="https://cdn.jsdelivr.net/npm/pdfjs-viewer-element/dist/pdfjs-viewer-element.js"></script>
 
     <!-- Structured Data for Academic Papers -->
     <script type="application/ld+json">
@@ -412,10 +413,13 @@
 <!--              <a href="https://huggingface.co/BIFOLD-BigEarthNetv2-0" target="_blank"-->
               <a href="https://huggingface.co/datasets/BIFOLD-BigEarthNetv2-0/BigEarthNet.txt" target="_blank"
                  class="external-link button is-normal is-rounded" style="background-color: black; color: white;">
+              <!-- <span class="icon"> -->
+              <!--   <img src="static/images/hf-logo.svg" alt="HuggingFace" width="24" height="24"/> -->
+              <!-- </span> -->
               <span class="icon">
-                <img src="static/images/hf-logo.svg" alt="HuggingFace" width="24" height="24"/>
+              <i class="fas fa-download"></i>
               </span>
-              <span>Dataset</span>
+              <span>Download</span>
               </a>
             </span>
 
@@ -681,8 +685,9 @@
                 <div class="columns is-centered has-text-centered">
                     <div class="column is-four-fifths">
                         <h2 class="title is-3">Paper</h2>
-                        <iframe src="static/pdfs/BEN_txt_2026_main.pdf" width="70%" height="950">
-                        </iframe>
+                        <!-- <iframe src="static/pdfs/BEN_txt_2026_main.pdf" width="70%" height="950"> -->
+                        <!-- </iframe> -->
+                        <pdfjs-viewer-element src="/static/pdfs/BEN_txt_2026_main.pdf" style="width: 100%; height: 80vh;"></pdfjs-viewer-element>
                     </div>
                 </div>
             </div>
