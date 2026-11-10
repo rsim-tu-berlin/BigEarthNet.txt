@@ -21,7 +21,7 @@ Example project pages built using this template are:
 
 
 
-# Start using the template
+## Start using the template
 To start using the template click on `Use this Template`.
 
 The template uses html for controlling the content and css for controlling the style. 
